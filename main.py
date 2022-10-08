@@ -5,8 +5,9 @@ from tkinter import *
 
 PINK = "##e2979c"
 RED = "#e7305b"
-GREEN = "#9bdeac"
+GREEN = "#519259"
 YELLOW = "#f7f5dd"
+BLACK = "#2C3639"
 FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
@@ -23,6 +24,7 @@ def reset():
     global reps, check
     if check > 0:
         reps, check = 0, 0
+        lbl_title.configure(text='Timer', fg=BLACK)
         lbl_check.configure(text='✔'*check)
         btn_reset.configure(state=DISABLED)
 
@@ -38,14 +40,17 @@ def start_timer():
 
     if reps in (0, 2, 4, 6):
         count_down(work_sec)
+        lbl_title.configure(text='Work', fg=GREEN)
         reps += 1
         check += 1
         lbl_check.configure(text='✔'*check)
     elif reps == 7:
         count_down(long_break_sec)
+        lbl_title.configure(text='Long Break', fg=RED)
         reps = 0
     elif reps in (1, 3, 5, 7):
         count_down(short_break_sec)
+        lbl_title.configure(text='Break', fg=PINK)
         reps += 1
 
 
@@ -77,7 +82,7 @@ window = Tk()
 window.title('Pomodoro')
 window.config(padx=100, pady=50, bg=YELLOW)
 
-lbl_title = Label(text='Timer', bg=YELLOW, fg=GREEN, font=(FONT_NAME, 50, 'bold'))
+lbl_title = Label(text='Timer', bg=YELLOW, fg=BLACK, font=(FONT_NAME, 50, 'bold'))
 lbl_title.grid(row=0, column=1)
 
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
