@@ -1,9 +1,11 @@
 
 from tkinter import *
 
-# ---------------------------- CONSTANTS ------------------------------- #
+reps = 0
+check = 0
 
-PINK = "##e2979c"
+
+PINK = "#e2979c"
 RED = "#e7305b"
 GREEN = "#519259"
 YELLOW = "#f7f5dd"
@@ -14,10 +16,6 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 15
 POSX_IMG = 100
 POSY_IMG = 112
-reps = 0
-check = 0
-
-# ---------------------------- TIMER RESET ------------------------------- #
 
 
 def reset():
@@ -29,11 +27,9 @@ def reset():
         btn_reset.configure(state=DISABLED)
 
 
-# ---------------------------- TIMER MECHANISM ------------------------------- #
-
-
 def start_timer():
-    global reps, check
+    global reps, check, status
+    status = None
     work_sec = WORK_MIN * 60
     short_break_sec = SHORT_BREAK_MIN * 60
     long_break_sec = LONG_BREAK_MIN * 60
@@ -43,7 +39,6 @@ def start_timer():
         lbl_title.configure(text='Work', fg=GREEN)
         reps += 1
         check += 1
-        lbl_check.configure(text='✔'*check)
     elif reps == 7:
         count_down(long_break_sec)
         lbl_title.configure(text='Long Break', fg=RED)
@@ -54,15 +49,13 @@ def start_timer():
         reps += 1
 
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
-
 def format_timer(number):
     mins, secs = divmod(number, 60)
     return '{:02d}:{:02d}'.format(mins, secs)
 
 
 def count_down(count):
-    global btn_start, btn_reset
+    global btn_start, btn_reset, status
     if btn_start['state'] == 'normal':
         btn_start.configure(state=DISABLED)
         btn_reset.configure(state=DISABLED)
@@ -73,9 +66,8 @@ def count_down(count):
     else:
         btn_start.configure(state=NORMAL)
         btn_reset.configure(state=NORMAL)
-
-
-# ---------------------------- UI SETUP ------------------------------- #
+        if status == 'work':
+            lbl_check.configure(text='✔'*check)
 
 
 window = Tk()
